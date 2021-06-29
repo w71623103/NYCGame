@@ -6,6 +6,7 @@ TagManager:
   tags:
   - standable
   - collectable
+  - bad-collectable
   layers:
   - Default
   - TransparentFX

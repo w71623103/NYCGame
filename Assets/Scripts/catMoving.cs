@@ -12,14 +12,19 @@ public class catMoving : MonoBehaviour
     public Rigidbody2D playerRB;
     public bool isGrounded = false;
     public int score = 0;
-
+    public GameObject staticRB;
+    public GameObject dynamicRB;
     public TextMeshProUGUI scoreNum;
+    public gamemanager gm;
 
     // Start is called before the first frame update
     // Equivalent of Create() in GameMaker
     void Start()
     {
+
         playerRB = GetComponent<Rigidbody2D>();
+        playerRB.bodyType = staticRB.GetComponent<Rigidbody2D>().bodyType;
+
         //squareTransform = GetComponent<Transform>(); //this gets a reference to the Transform component on this same gameobject
         //squareTransform = transform;
     }
@@ -28,32 +33,45 @@ public class catMoving : MonoBehaviour
     // Equivalent of Step() in GameMaker
     void FixedUpdate() //happens on a fixed time step
     {
-        if(Input.GetKey(KeyCode.LeftArrow))
+        if (gm.gameStarted)
         {
-            transform.Translate(Vector3.left * movementSpeed);
-            GetComponent<Animator>().Play("catLeft");
-        } 
-        else if(Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.Translate(Vector3.right * movementSpeed);
-            GetComponent<Animator>().Play("catRight");
-        } else
-        {
-            GetComponent<Animator>().Play("catStill");
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                transform.Translate(Vector3.left * movementSpeed);
+                if (isGrounded)
+                    GetComponent<Animator>().Play("catLeft");
+                else
+                    GetComponent<Animator>().Play("catJumpleft");
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                transform.Translate(Vector3.right * movementSpeed);
+                if (isGrounded)
+                    GetComponent<Animator>().Play("catRight");
+                else
+                    GetComponent<Animator>().Play("catJumpright");
+            }
+            else
+            {
+                GetComponent<Animator>().Play("catStill");
+            }
         }
-        
         
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+        if (gm.gameStarted)
         {
-            if(isGrounded) {
-                playerRB.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
-                //Vector2.up is a short way of writing new Vector2(0,-1);
-            }
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                if (isGrounded)
+                {
+                    playerRB.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+                    //Vector2.up is a short way of writing new Vector2(0,-1);
+                }
 
+            }
         }
         scoreNum.text = score.ToString();
     }
@@ -80,6 +98,11 @@ public class catMoving : MonoBehaviour
          {
             Debug.Log("Collected");
             score++;
+            Destroy(collision.gameObject);
+         }else if(collision.gameObject.tag == "bad-collectable")
+         {
+            Debug.Log("Collected");
+            score--;
             Destroy(collision.gameObject);
          }
      }

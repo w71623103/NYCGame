@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d4b90b8fbfe25a14cae006ecc64754fe
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - fishcan: {instanceID: 0}
+  - surstormming: {instanceID: 0}
+  - spawn_pos1: {instanceID: 0}
+  - spawn_pos2: {instanceID: 0}
+  - spawn_pos3: {instanceID: 0}
+  - spawn_pos4: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
